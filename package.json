@@ -21,7 +21,7 @@
   "homepage": "https://github.com/fdapps-tools/fd#readme",
   "author": "David Silva <srdavidsilva@gmail.com>",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "cargo-cp-artifact": "^0.1",
     "axios": "^0.21.1",
     "folder-hash": "^4.0.1",
