@@ -1,0 +1,8 @@
+target
+index.node
+**/node_modules
+**/.DS_Store
+npm-debug.log*
+src/js/localDB/*
+__tests__/coverage
+.env

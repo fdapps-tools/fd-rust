@@ -1,0 +1,32 @@
+{
+  "name": "fd-rust",
+  "version": "0.0.2",
+  "description": "A Rust implementation of fd toolkit",
+  "main": "index.js",
+  "scripts": {
+    "build": "cargo-cp-artifact -nc index.node -- cargo build --message-format=json-render-diagnostics",
+    "build-debug": "npm run build --",
+    "build-release": "npm run build -- --release",
+    "install": "npm run build-release",
+    "test": "cargo test",
+    "test:js": "jest --collectCoverage"
+  },
+  "keywords": [
+    "fd",
+    "fdapps-tools"
+  ],
+  "bugs": {
+    "url": "https://github.com/fdapps-tools/fd/issues"
+  },
+  "homepage": "https://github.com/fdapps-tools/fd#readme",
+  "author": "David Silva <srdavidsilva@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "cargo-cp-artifact": "^0.1",
+    "axios": "^0.21.1",
+    "folder-hash": "^4.0.1",
+    "express": "~4.16",
+    "localtunnel": "^2.0",
+    "jest": "^27.0.6"
+  }
+}
