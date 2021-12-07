@@ -1,6 +1,16 @@
-# Fully Distributed Application toolkit - Rewriting in Rust
+# fd - Fully distributed toolkit - Rewriting in Rust
 
-Warning - This is a proof of concept project, is not can be usage yet! 👨‍💻 👨‍💻
+![alt](https://img.shields.io/github/issues/fdapps-tools/fd-rust)
+![alt](https://img.shields.io/github/forks/fdapps-tools/fd-rust)
+![alt](https://img.shields.io/github/stars/fdapps-tools/fd-rust)
+![alt](https://img.shields.io/github/license/fdapps-tools/fd-rust)
+![alt](https://img.shields.io/github/repo-size/fdapps-tools/fd-rust)
+![alt](https://img.shields.io/github/contributors-anon/fdapps-tools/fd-rust)
+
+![Rust Language](https://img.shields.io/badge/Rust-black?style=for-the-badge&logo=rust&logoColor=#E57324) 
+![NodeJS](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white) ![NPM](https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white)
+
+### Warning - This is a proof of concept project, is not can be usage yet! 👨‍💻 
 ----
 
 The project goal is allow full projects run in own network nodes as P2P application on easy mode, (like framework) to make your fully decentralized modern application as peer to peer (without center server needed)
@@ -17,14 +27,14 @@ This application is rewriting in Rust Language with neon help, [see neon default
 
 Actually this contains code salad with JS source in src/js and init rust code in src/lib.rs and I'm rewriting from JS to Rust.
 
-## Package features
+# Package features
 
 * [Tunneling](docs/Tunneling.md) to delivery application P2P;
 * [Storage](docs/Storage.md) Node Informations;
 * Communication between nodes;
 * [Consensous algorithm](docs/NodeManager.md);
 
-# Premises
+## Premises
 
   - Application fully run on *P2P enviroment* - Offile just if last Node to down;
   - It must be possible that any *modern frontend* (VueJS, React, Angular, etc) can be delivery;
@@ -33,13 +43,13 @@ Actually this contains code salad with JS source in src/js and init rust code in
   - Remove all that's possible about centralized resources;
 
 
-# TODO - REWRITING IN RUST
+# TODO
 
+* Rewrite modules - src/js to Rust;
 * Improve tests coverage;
-* Write a good readme for this;
 * Improve consensous;
 * Improve tunneling;
-* Improve all
+* Tests
 
 # How to contribute
 If you fell here out of nowhere but liked something you've read, I'm counting on your help for the project to grow, after all, despite starting from me, it's not for me, but for everyone.
