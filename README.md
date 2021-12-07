@@ -17,7 +17,7 @@ The project goal is allow full projects run in own network nodes as P2P applicat
 
 My main tech motivation is improving myself 🧠 about decentralization concepts and limitations, and can to use my other knowledges, like networks, linux and development skills.
 
-I want any developer can be insert this tools on your application and done! Your application can be decentralized.
+I want any developer can be insert this tools on your application (`nodeJS` api + frontend) and done (with exception data for now)! Your application can be decentralized.
 
 Has some limitations about this goal, I understand. But I'm solving this with alternatives and doing documentation for improving each part. Is probably that on the future, our limitations on the network there are smaller, I'll learn more and who know any genius guy can be help us.
 
