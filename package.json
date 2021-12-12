@@ -9,7 +9,7 @@
     "build-release": "npm run build -- --release",
     "install": "npm run build-release",
     "test": "cargo test",
-    "test:js": "jest --collectCoverage"
+    "test:js": "npm run build-release && jest --collectCoverage"
   },
   "keywords": [
     "fd",

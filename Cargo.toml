@@ -12,6 +12,9 @@ crate-type = ["cdylib"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+hyper-reverse-proxy = "0.4"
+hyper = "0.12"
+futures = "0.1"
 
 [dependencies.neon]
 version = "0.9"

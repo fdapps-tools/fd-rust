@@ -1,26 +1,57 @@
 use neon::prelude::*;
+use hyper::server::conn::AddrStream;
+use hyper::{Body, Request, Response, Server};
+use hyper::service::{service_fn, make_service_fn};
+use futures::future::{self, Future};
 
-fn attach_routes(mut cx: FunctionContext) -> JsResult<JsObject> {
-    let router: Handle<JsObject> = cx.argument(0)?;
+fn setup_server(mut cx: FunctionContext) -> JsResult<JsObject> {
+    let application_port: Handle<JsNumber> = cx.argument(0)?;
+
+    // @todo setup network layer routes
     
-    let func = router
-    .get(&mut cx, "get")?
-    .downcast_or_throw::<JsFunction, _>(&mut cx)?;
-    
-    let null = cx.null();
-    let route = cx.string("/rust-route-created");
-    let param = cx.string("----param");
+    // @todo chose port
+    let addr = ([127, 0, 0, 1], 3000).into();
 
-    let router = func.call(&mut cx, null, vec![route, param])?;
+    // @todo: concat port and test /* route
+    let make_svc = make_service_fn(|socket: &AddrStream| {
+        let remote_addr = socket.remote_addr();
+        service_fn(move |req: Request<Body>| {
 
+            if req.uri().path().starts_with("/app") {
+
+                // will forward requests to port application_port
+                return hyper_reverse_proxy::call(remote_addr.ip(), "http://127.0.0.1:13901", req)
+
+            } else {
+                debug_request(req)
+            }
+        })
+    });
+
+    let server = Server::bind(&addr)
+        .serve(make_svc)
+        .map_err(|e| eprintln!("server error: {}", e));
+
+    println!("Running server on {:?}", addr);
+
+    hyper::rt::run(server);
     let obj = cx.empty_object();
-    obj.set(&mut cx, "router", router)?;
 
     Ok(obj)
 }
 
+
+type BoxFut = Box<Future<Item=Response<Body>, Error=hyper::Error> + Send>;
+
+fn debug_request(req: Request<Body>) -> BoxFut {
+    let body_str = format!("{:?}", req);
+    let response = Response::new(Body::from(body_str));
+    Box::new(future::ok(response))
+}
+
 #[neon::main]
 fn main(mut cx: ModuleContext) -> NeonResult<()> {
-    cx.export_function("attach_routes", attach_routes)?;
+    cx.export_function("setup_server", setup_server)?;
     Ok(())
 }
+
