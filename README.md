@@ -30,8 +30,8 @@ Actually this contains code salad with JS source in src/js and init rust code in
 # Package features
 
 * [Tunneling](docs/Tunneling.md) to delivery application P2P;
-* [Storage](docs/Storage.md) Node Informations;
-* Communication between nodes;
+* [Storage](docs/Storage.md) Node database Informations;
+* [Network](docs/Network.md) Communication between nodes;
 * [Consensous algorithm](docs/NodeManager.md);
 
 ## Premises
@@ -42,10 +42,9 @@ Actually this contains code salad with JS source in src/js and init rust code in
   - Need *automatized tests* for all;
   - Remove all that's possible about centralized resources;
 
-
 # TODO
 
-* Rewrite modules - src/js to Rust;
+* Rewrite modules - src/js to Rust - First (Actually) [Network](docs/Network.md);
 * Improve tests coverage;
 * Improve consensous;
 * Improve tunneling;

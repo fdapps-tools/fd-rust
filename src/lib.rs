@@ -1,7 +1,7 @@
-use futures::future::{self, Future};
+use futures::future::{Future};
 use hyper::server::conn::AddrStream;
 use hyper::service::{make_service_fn, service_fn};
-use hyper::{Body, Request, Response, Server};
+use hyper::{Body, Request, Server};
 use neon::prelude::*;
 mod routes;
 
@@ -14,10 +14,7 @@ fn setup_server(mut cx: FunctionContext) -> JsResult<JsObject> {
     let make_svc = make_service_fn(|socket: &AddrStream| {
         let remote_addr = socket.remote_addr();
         service_fn(move |req: Request<Body>| {
-            if req.uri().path().starts_with("/") {
-                // @todo: concat port and test /* route
-                return hyper_reverse_proxy::call(remote_addr.ip(), "http://127.0.0.1:3000", req);
-            } else if req.uri().path().starts_with("/stats") {
+            if req.uri().path().starts_with("/stats") {
                 routes::stats()
             } else if req.uri().path().starts_with("/nodes") {
                 routes::nodes()
@@ -26,7 +23,8 @@ fn setup_server(mut cx: FunctionContext) -> JsResult<JsObject> {
             } else if req.uri().path().starts_with("/update-node-info") {
                 routes::update()
             } else {
-                Box::new(future::ok(Response::new(Body::from("Not found!"))))
+                // @todo: concat port and test /* route
+                return hyper_reverse_proxy::call(remote_addr.ip(), "http://127.0.0.1:3000", req);
             }
         })
     });
