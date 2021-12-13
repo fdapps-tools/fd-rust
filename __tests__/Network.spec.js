@@ -1,10 +1,34 @@
 const { setup_server } = require('../index')
+const axios = require('axios');
 
-describe('src/Network', () => {
+// @todo: test routes
+describe('Network - Node Manager routes', () => {
 
-  it(`ensure that correct routes can be setuped on service`, async () => {
-    const server = setup_server(process.env.PORT || 3001)
-    console.log(server)
+  const server = null
+  const path = 'http://localhost:3000'
+
+  beforeAll(() => {
+    server = setup_server(process.env.PORT || 3001)
+  });
+
+  it(`ensure that route stats works`, async () => {
+    const res = await axios(`${path}/stats`);
+    console.log('res -------', res)
+  })
+
+  it(`ensure that route stats works`, async () => {
+    const res = await axios(`${path}/nodes`);
+    console.log('res -------', res)
+  })
+
+  it(`ensure that route stats works`, async () => {
+    const res = await axios(`${path}/join-request`);
+    console.log('res -------', res)
+  })
+
+  it(`ensure that route stats works`, async () => {
+    const res = await axios(`${path}/update-node-info`);
+    console.log('res -------', res)
   })
 
 })

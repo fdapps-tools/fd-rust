@@ -1,29 +1,32 @@
-use neon::prelude::*;
-use hyper::server::conn::AddrStream;
-use hyper::{Body, Request, Response, Server};
-use hyper::service::{service_fn, make_service_fn};
 use futures::future::{self, Future};
+use hyper::server::conn::AddrStream;
+use hyper::service::{make_service_fn, service_fn};
+use hyper::{Body, Request, Response, Server};
+use neon::prelude::*;
+mod routes;
 
 fn setup_server(mut cx: FunctionContext) -> JsResult<JsObject> {
     let application_port: Handle<JsNumber> = cx.argument(0)?;
 
-    // @todo setup network layer routes
-    
     // @todo chose port
-    let addr = ([127, 0, 0, 1], 3000).into();
+    let addr = ([127, 0, 0, 1], 3001).into();
 
-    // @todo: concat port and test /* route
     let make_svc = make_service_fn(|socket: &AddrStream| {
         let remote_addr = socket.remote_addr();
         service_fn(move |req: Request<Body>| {
-
-            if req.uri().path().starts_with("/app") {
-
-                // will forward requests to port application_port
-                return hyper_reverse_proxy::call(remote_addr.ip(), "http://127.0.0.1:13901", req)
-
+            if req.uri().path().starts_with("/") {
+                // @todo: concat port and test /* route
+                return hyper_reverse_proxy::call(remote_addr.ip(), "http://127.0.0.1:3000", req);
+            } else if req.uri().path().starts_with("/stats") {
+                routes::stats()
+            } else if req.uri().path().starts_with("/nodes") {
+                routes::nodes()
+            } else if req.uri().path().starts_with("/join-request") {
+                routes::join()
+            } else if req.uri().path().starts_with("/update-node-info") {
+                routes::update()
             } else {
-                debug_request(req)
+                Box::new(future::ok(Response::new(Body::from("Not found!"))))
             }
         })
     });
@@ -40,18 +43,8 @@ fn setup_server(mut cx: FunctionContext) -> JsResult<JsObject> {
     Ok(obj)
 }
 
-
-type BoxFut = Box<Future<Item=Response<Body>, Error=hyper::Error> + Send>;
-
-fn debug_request(req: Request<Body>) -> BoxFut {
-    let body_str = format!("{:?}", req);
-    let response = Response::new(Body::from(body_str));
-    Box::new(future::ok(response))
-}
-
 #[neon::main]
 fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("setup_server", setup_server)?;
     Ok(())
 }
-
