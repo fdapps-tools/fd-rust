@@ -1,15 +1,14 @@
-use futures::future::{Future};
+use futures::future::Future;
 use hyper::server::conn::AddrStream;
 use hyper::service::{make_service_fn, service_fn};
 use hyper::{Body, Request, Server};
 use neon::prelude::*;
 mod routes;
+use std::env;
 
 fn setup_server(mut cx: FunctionContext) -> JsResult<JsObject> {
-    let application_port: Handle<JsNumber> = cx.argument(0)?;
-
-    // @todo chose port
-    let addr = ([127, 0, 0, 1], 3001).into();
+    let port_fd = env::var("PORT_FD").expect("$PORT_FD is not set");
+    let addr = ([127, 0, 0, 1], port_fd.parse::<u16>().unwrap()).into();
 
     let make_svc = make_service_fn(|socket: &AddrStream| {
         let remote_addr = socket.remote_addr();
@@ -23,8 +22,11 @@ fn setup_server(mut cx: FunctionContext) -> JsResult<JsObject> {
             } else if req.uri().path().starts_with("/update-node-info") {
                 routes::update()
             } else {
-                // @todo: concat port and test /* route
-                return hyper_reverse_proxy::call(remote_addr.ip(), "http://127.0.0.1:3000", req);
+                let app_port = env::var("PORT").expect("$PORT is not set");
+                let url = format!("http://localhost:{}", app_port);
+                println!("fd: reverse proxy to: {}", url);
+
+                return hyper_reverse_proxy::call(remote_addr.ip(), &url, req);
             }
         })
     });
@@ -33,7 +35,7 @@ fn setup_server(mut cx: FunctionContext) -> JsResult<JsObject> {
         .serve(make_svc)
         .map_err(|e| eprintln!("server error: {}", e));
 
-    println!("Running server on {:?}", addr);
+    println!("fd: running on {:?}", addr);
 
     hyper::rt::run(server);
     let obj = cx.empty_object();

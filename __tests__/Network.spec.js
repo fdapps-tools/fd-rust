@@ -1,14 +1,15 @@
 const { setup_server } = require('../index')
 const axios = require('axios');
 
+// @todo: unbreak setup_server return
 // @todo: test routes
 describe('Network - Node Manager routes', () => {
 
   const server = null
-  const path = 'http://localhost:3000'
+  const path = `http://localhost:${process.env.PORT_FD}`
 
   beforeAll(() => {
-    server = setup_server(process.env.PORT || 3001)
+    server = setup_server()
   });
 
   it(`ensure that route /stats works`, async () => {
