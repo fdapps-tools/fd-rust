@@ -17,7 +17,7 @@ pub fn stats() -> Box<dyn Future<Item = Response<Body>, Error = hyper::Error> + 
 
 // @todo -> DB implementation to finish this
 pub fn nodes() -> Box<dyn Future<Item = Response<Body>, Error = hyper::Error> + Send> {
-  let json_data = json!({ "nodes": "['node-1']" });
+  let json_data = json!({ "nodes": ["node-1"] });
 
   Box::new(future::ok(
     Response::builder()

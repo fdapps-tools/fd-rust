@@ -6,7 +6,9 @@ use neon::prelude::*;
 mod routes;
 use std::env;
 
-fn setup_server(mut cx: FunctionContext) -> JsResult<JsObject> {
+use std::thread;
+
+fn setup_server(mut cx: FunctionContext) -> JsResult<JsUndefined> {
     let port_fd = env::var("PORT_FD").expect("$PORT_FD is not set");
     let addr = ([127, 0, 0, 1], port_fd.parse::<u16>().unwrap()).into();
 
@@ -35,12 +37,15 @@ fn setup_server(mut cx: FunctionContext) -> JsResult<JsObject> {
         .serve(make_svc)
         .map_err(|e| eprintln!("server error: {}", e));
 
+    // this move hyper to another thread and unlock nodeJS process
+    // @todo: need improve and test better 
+    thread::spawn(move || {
+        hyper::rt::run(server);
+    });
+
     println!("fd: running on {:?}", addr);
 
-    hyper::rt::run(server);
-    let obj = cx.empty_object();
-
-    Ok(obj)
+    Ok(cx.undefined())
 }
 
 #[neon::main]
