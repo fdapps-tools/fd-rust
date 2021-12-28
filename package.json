@@ -9,7 +9,7 @@
     "build-release": "npm run build -- --release",
     "install": "npm run build-release",
     "test": "cargo test",
-    "test:js": "jest --collectCoverage"
+    "test:js": "export TUNNEL_URL=TEST_TUNNEL_URL; export PORT=3000; export PORT_FD=3001; npm run build-release && jest --collectCoverage"
   },
   "keywords": [
     "fd",
