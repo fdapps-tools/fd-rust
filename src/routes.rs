@@ -3,6 +3,9 @@ use hyper::{Body, Response};
 use std::env;
 use serde_json::json;
 
+// @todo: fix this call 
+// mod node_manager;
+
 pub fn stats() -> Box<dyn Future<Item = Response<Body>, Error = hyper::Error> + Send> {
   let tunnel_url = env::var("TUNNEL_URL").expect("$TUNNEL_URL is not set");
   let json_data = json!({ "url": tunnel_url });
@@ -17,6 +20,8 @@ pub fn stats() -> Box<dyn Future<Item = Response<Body>, Error = hyper::Error> + 
 
 // @todo -> DB implementation to finish this
 pub fn nodes() -> Box<dyn Future<Item = Response<Body>, Error = hyper::Error> + Send> {
+  // @todo: after make list ono storage, convert to json in here
+  // let json_data = node_manager::list();
   let json_data = json!({ "nodes": ["node-1"] });
 
   Box::new(future::ok(
@@ -31,6 +36,7 @@ pub fn nodes() -> Box<dyn Future<Item = Response<Body>, Error = hyper::Error> + 
 // @todo -> DB implementation to finish this
 pub fn join() -> Box<dyn Future<Item = Response<Body>, Error = hyper::Error> + Send> {
   let json_data = json!({ "status": "PENDING" });
+  // let json_data = node_manager::join();
 
   Box::new(future::ok(
     Response::builder()
@@ -43,7 +49,8 @@ pub fn join() -> Box<dyn Future<Item = Response<Body>, Error = hyper::Error> + S
 // @todo -> DB implementation to finish this
 pub fn update() -> Box<dyn Future<Item = Response<Body>, Error = hyper::Error> + Send> {
   let json_data = json!({ "status": "true" });
-  
+  // node_manager::update();
+
   Box::new(future::ok(
     Response::builder()
       .header("Content-Type", "application/json")
