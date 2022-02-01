@@ -13,6 +13,8 @@
 ### Warning - This is a proof of concept project, is not can be usage yet! 👨‍💻 
 ----
 
+Architecture draft: https://whimsical.com/fd-architecture-2cJrGY69tg6b1BpCwcteEM
+
 The project goal is allow full projects run in own network nodes as P2P application on easy mode, (like framework) to make your fully decentralized modern application as peer to peer (without center server needed)
 
 My main tech motivation is improving myself 🧠 about decentralization concepts and limitations, and can to use my other knowledges, like networks, linux and development skills.

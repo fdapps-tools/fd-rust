@@ -3,8 +3,7 @@ use hyper::{Body, Response};
 use std::env;
 use serde_json::json;
 
-// @todo: fix this call 
-// mod node_manager;
+use crate::storage;
 
 pub fn stats() -> Box<dyn Future<Item = Response<Body>, Error = hyper::Error> + Send> {
   let tunnel_url = env::var("TUNNEL_URL").expect("$TUNNEL_URL is not set");
@@ -21,8 +20,8 @@ pub fn stats() -> Box<dyn Future<Item = Response<Body>, Error = hyper::Error> + 
 // @todo -> DB implementation to finish this
 pub fn nodes() -> Box<dyn Future<Item = Response<Body>, Error = hyper::Error> + Send> {
   // @todo: after make list ono storage, convert to json in here
-  // let json_data = node_manager::list();
-  let json_data = json!({ "nodes": ["node-1"] });
+  let json_data =  json!({ "url": "TODO" });
+  let json_data = json!(storage::node_list());
 
   Box::new(future::ok(
     Response::builder()

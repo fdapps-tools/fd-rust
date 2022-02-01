@@ -1,4 +1,4 @@
-mod storage;
+use crate::storage;
 
 #[derive(Debug)]
 
@@ -9,13 +9,13 @@ pub struct Node {
   hash: String,
 }
 
-pub fn add(node Node) -> Result<()> {
-  storage::node_add(node)
+pub fn add(node: Node) -> Result<()> {
+  storage::node_add(node);
   Ok(())
 }
 
 pub fn list() -> Result<()> {
-  storage::node_list()
+  storage::node_list();
   Ok(())
 }
 

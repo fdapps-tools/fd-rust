@@ -6,12 +6,11 @@ use neon::prelude::*;
 use std::env;
 use std::thread;
 
-mod storage;
-mod routes;
+pub mod storage;
+pub mod routes;
 
 fn setup_server(mut cx: FunctionContext) -> JsResult<JsUndefined> {
 
-    // setup sqlite
     storage::setup();
 
     let port_fd = env::var("PORT_FD").expect("$PORT_FD is not set");

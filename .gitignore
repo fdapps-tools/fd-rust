@@ -8,3 +8,4 @@ __tests__/coverage
 coverage
 .env
 **/*.sqlite
+.TODO
