@@ -16,6 +16,8 @@ hyper-reverse-proxy = "0.4"
 hyper = "0.12"
 futures = "0.1"
 serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_rusqlite = "0"
 
 [dependencies.neon]
 version = "0.9"

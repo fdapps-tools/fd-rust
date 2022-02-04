@@ -1,6 +1,9 @@
 
 use rusqlite::{params, Connection, Result};
-#[derive(Debug)]
+use serde::{Serialize, Deserialize};
+use serde_rusqlite::{from_rows};
+
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Node {
     id: i32,
     host: String,
@@ -40,24 +43,14 @@ pub fn node_add(node: Node) -> Result<()> {
     Ok(())
 }
 
-pub fn node_list() -> Result<(Vec<Node>)> {
+pub fn node_list() -> Result<Node, rusqlite::Error> {
     let path = "./my_db.sqlite";
     let conn = Connection::open(&path)?;
 
-    let mut stmt = conn.prepare("SELECT id, hash, host, lastcheck FROM nodes")?;
-    let mut nodes = Vec::new();
+    let mut stmt = conn.prepare("SELECT id, hash, host, lastcheck FROM nodes").unwrap();
+    let mut res = from_rows::<Node>(stmt.query([]).unwrap());
 
-    let node_iter = stmt.query_map([], |row| {
-        nodes.push(Node {
-            id: row.get(0)?,
-            hash: row.get(1)?,
-            host: row.get(2)?,
-            lastcheck: row.get(3)?,
-        });
-        Ok(())
-    })?;
-
-    Ok(nodes)
+    Ok(res.next().unwrap().unwrap())
 }
 
 #[cfg(test)]

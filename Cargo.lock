@@ -150,7 +150,9 @@ dependencies = [
  "hyper-reverse-proxy",
  "neon",
  "rusqlite",
+ "serde",
  "serde_json",
+ "serde_rusqlite",
 ]
 
 [[package]]
@@ -636,6 +638,20 @@ name = "serde"
 version = "1.0.131"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b4ad69dfbd3e45369132cc64e6748c2d65cdfb001a2b1c232d128b4ad60561c1"
+dependencies = [
+ "serde_derive",
+]
+
+[[package]]
+name = "serde_derive"
+version = "1.0.131"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b710a83c4e0dff6a3d511946b95274ad9ca9e5d3ae497b63fda866ac955358d2"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
 
 [[package]]
 name = "serde_json"
@@ -645,6 +661,16 @@ checksum = "d0ffa0837f2dfa6fb90868c2b5468cad482e175f7dad97e7421951e663f2b527"
 dependencies = [
  "itoa",
  "ryu",
+ "serde",
+]
+
+[[package]]
+name = "serde_rusqlite"
+version = "0.29.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a0e81eb3815431e23719106d95b6d0397403919b304f24e454f922a4d2155d97"
+dependencies = [
+ "rusqlite",
  "serde",
 ]
 
