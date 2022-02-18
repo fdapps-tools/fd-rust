@@ -29,7 +29,6 @@ pub fn setup() -> Result<()> {
     Ok(())
 }
 
-
 pub fn node_add(node: Node) -> Result<()> {
     let path = "./my_db.sqlite";
     let conn = Connection::open(&path)?;
@@ -43,14 +42,23 @@ pub fn node_add(node: Node) -> Result<()> {
     Ok(())
 }
 
-pub fn node_list() -> Result<Node, rusqlite::Error> {
+pub fn node_list() -> Result<Vec<Node>, rusqlite::Error> {
     let path = "./my_db.sqlite";
     let conn = Connection::open(&path)?;
 
-    let mut stmt = conn.prepare("SELECT id, hash, host, lastcheck FROM nodes").unwrap();
-    let mut res = from_rows::<Node>(stmt.query([]).unwrap());
+    let mut stmt = conn.prepare("SELECT * FROM nodes").unwrap();
+    let mut rows = from_rows::<Node>(stmt.query([]).unwrap());
+    let mut nodes: Vec<Node> = Vec::new();
 
-    Ok(res.next().unwrap().unwrap())
+    loop {
+        match rows.next() {
+            None => break,
+            Some(node) => {
+                nodes.push(node.unwrap());
+            },
+        };
+    }
+    Ok(nodes)
 }
 
 #[cfg(test)]
@@ -73,8 +81,4 @@ mod tests {
         assert_eq!(node_add(node), Ok(()));
     }
 
-    #[test]
-    fn test_list_nodes() {
-        assert_eq!(node_list(), Ok(()));
-    }
 }
