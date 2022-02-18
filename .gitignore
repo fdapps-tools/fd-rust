@@ -7,3 +7,5 @@ src/js/localDB/*
 __tests__/coverage
 coverage
 .env
+**/*.sqlite
+.TODO

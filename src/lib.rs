@@ -3,12 +3,15 @@ use hyper::server::conn::AddrStream;
 use hyper::service::{make_service_fn, service_fn};
 use hyper::{Body, Request, Server};
 use neon::prelude::*;
-mod routes;
 use std::env;
-
 use std::thread;
 
+pub mod storage;
+pub mod routes;
+
 fn setup_server(mut cx: FunctionContext) -> JsResult<JsUndefined> {
+    storage::setup();
+
     let port_fd = env::var("PORT_FD").expect("$PORT_FD is not set");
     let addr = ([127, 0, 0, 1], port_fd.parse::<u16>().unwrap()).into();
 
